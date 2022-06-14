@@ -1,0 +1,9 @@
+.sudoku-node-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .sudoku-node {
+        width: 50px;
+        appearance: none;
+    }
+}
