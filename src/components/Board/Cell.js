@@ -6,6 +6,10 @@ const _ = require('lodash');
 const Cell = ({ row, column, board, active }) => {
 	const [cellValue, setCellValue] = useState(board[row][column]);
 
+	// Number of 3x3 squares on each side, meaning
+	// a 9x9 cells Sudoku board is 3x3 squares.
+	const boardSquaresOnSide = 3;
+
 	const changeCellValue = (e) => {
 		let input = e.target.value;
 		if (active) {
@@ -16,15 +20,13 @@ const Cell = ({ row, column, board, active }) => {
 			if (_.inRange(input, 1, 10)) {
 				if (!isInRow(input)) {
 					if (!isInColumn(input)) {
-						setCellValue(input);
-						board[row][column] = input;
-						// console.log(e.target.value);
-						// console.log(e.target);
+						if (!isInSquare(input)) {
+							setCellValue(input);
+							board[row][column] = input;
+						}
 					}
-					// console.log(value);
 				}
 			}
-			// isInSquare()
 		}
 	};
 
@@ -39,19 +41,41 @@ const Cell = ({ row, column, board, active }) => {
 		}
 		return columnArray.indexOf(num) > -1;
 	};
+
+	const getSquareRowIndexes = () => {
+		if (Math.floor(row / boardSquaresOnSide) === 0) {
+			return [0, 1, 2];
+		}
+		if (Math.floor(row / boardSquaresOnSide) === 1) {
+			return [3, 4, 5];
+		}
+		if (Math.floor(row / boardSquaresOnSide) === 2) {
+			return [6, 7, 8];
+		}
+	};
+	const getSquareColumnIndexes = () => {
+		if (Math.floor(column / boardSquaresOnSide) === 0) {
+			return [0, 1, 2];
+		}
+		if (Math.floor(column / boardSquaresOnSide) === 1) {
+			return [3, 4, 5];
+		}
+		if (Math.floor(column / boardSquaresOnSide) === 2) {
+			return [6, 7, 8];
+		}
+	};
 	// Checks if the number provided is already in a 3x3 square
 	// (the board consists of 9 3x3 squares)
 	const isInSquare = (num) => {
-		if (column % 3 === 0) {
-			if (row % 3 === 0) {
-				for (let i = 0; i < 3; i++) {
-					for (let j = 0; j < 3; j++) {
-						if (board[row + i][column + j] === num) {
-						}
-					}
-				}
+		const boardSquare = [];
+		const rowIndexes = getSquareRowIndexes();
+		const columnIndexes = getSquareColumnIndexes();
+		for (let i = 0; i < boardSquaresOnSide; i++) {
+			for (let j = 0; j < boardSquaresOnSide; j++) {
+				boardSquare.push(board[rowIndexes[i]][columnIndexes[j]]);
 			}
 		}
+		return boardSquare.includes(num);
 	};
 
 	return (
