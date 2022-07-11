@@ -1,9 +1,9 @@
 import Button from './Button';
 
-const Buttons = () => {
+const Buttons = (props) => {
 	return (
 		<div>
-			<Button text='Check' />
+			<Button text='Check' onClick={props.check} />
 			<Button text='Clear' />
 			<Button text='Solve' />
 		</div>

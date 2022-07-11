@@ -3,28 +3,45 @@ import styles from './cell.module.scss';
 
 const _ = require('lodash');
 
-const Cell = ({ row, column, board, active }) => {
+const Cell = ({ row, column, board, active, difficulty }) => {
 	const [cellValue, setCellValue] = useState(board[row][column]);
-
+	const hearts = 3;
 	// Number of 3x3 squares on each side, meaning
 	// a 9x9 cells Sudoku board is 3x3 squares.
 	const boardSquaresOnSide = 3;
 
-	const changeCellValue = (e) => {
-		let input = e.target.value;
+	const changeCellValueNormal = (e) => {
+		const input = e.target.value
+		if (active) {
+			if (input === '') {
+				setCellValue('0')
+				board[row][column] = input
+			}
+			if (_.inRange(input, 1, 10)) {
+				if (!isInRow(input) && !isInColumn(input) && !isInSquare(input)) {
+					setCellValue(input);
+					board[row][column] = input;
+				} else {
+					hearts -= 1
+					setCellValue(input)
+					board[row][column] = input
+					// Change Cell's background to indicate a mistake has been made
+				}
+			}
+		}
+	}
+
+	const changeCellValueCasual = (e) => {
+		const input = e.target.value;
 		if (active) {
 			if (input === '') {
 				setCellValue('0');
 				board[row][column] = input;
 			}
 			if (_.inRange(input, 1, 10)) {
-				if (!isInRow(input)) {
-					if (!isInColumn(input)) {
-						if (!isInSquare(input)) {
-							setCellValue(input);
-							board[row][column] = input;
-						}
-					}
+				if (!isInRow(input) && !isInColumn(input) && !isInSquare(input)) {
+					setCellValue(input);
+					board[row][column] = input;
 				}
 			}
 		}
@@ -83,7 +100,7 @@ const Cell = ({ row, column, board, active }) => {
 			<input
 				type='text'
 				value={cellValue === '0' ? '' : cellValue}
-				onChange={changeCellValue}
+				onChange={difficulty == "casual" ? changeCellValueCasual : changeCellValueNormal}
 				className={styles['sudoku-node']}
 			/>
 		</div>

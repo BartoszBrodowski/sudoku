@@ -1,23 +1,12 @@
 import Cell from './Cell';
 import styles from './board.module.scss';
 
-const board = [
-	['0', '0', '0', '0', '0', '0', '0', '0', '0'],
-	['0', '0', '0', '0', '0', '0', '0', '0', '0'],
-	['0', '0', '0', '0', '0', '2', '0', '0', '0'],
-	['0', '0', '1', '0', '0', '0', '0', '0', '0'],
-	['0', '0', '0', '0', '0', '0', '0', '0', '0'],
-	['0', '0', '0', '0', '0', '0', '0', '0', '0'],
-	['0', '0', '0', '0', '0', '0', '0', '0', '0'],
-	['0', '0', '0', '0', '0', '0', '0', '0', '0'],
-	['0', '0', '0', '0', '0', '0', '0', '0', '0'],
-];
 
-const Board = () => {
+const Board = (props) => {
 	return (
 		<div className={styles['board-container']}>
 			<div className={styles.board}>
-				{board.map((column, columnIndex) => {
+				{props.board.map((column, columnIndex) => {
 					return (
 						<div key={columnIndex}>
 							{column.map((node, rowIndex) => {
@@ -31,8 +20,9 @@ const Board = () => {
 										}
 										row={rowIndex}
 										column={columnIndex}
-										board={board}
-										active={board[rowIndex][columnIndex] === '0'}
+										board={props.board}
+										active={props.board[rowIndex][columnIndex] === '0'}
+										difficulty={props.difficulty}
 									/>
 								);
 							})}
