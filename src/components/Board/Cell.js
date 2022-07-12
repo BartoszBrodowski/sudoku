@@ -3,9 +3,8 @@ import styles from './cell.module.scss';
 
 const _ = require('lodash');
 
-const Cell = ({ row, column, board, active, difficulty }) => {
+const Cell = ({ row, column, board, active, hearts, onMistake, difficulty }) => {
 	const [cellValue, setCellValue] = useState(board[row][column]);
-	const hearts = 3;
 	// Number of 3x3 squares on each side, meaning
 	// a 9x9 cells Sudoku board is 3x3 squares.
 	const boardSquaresOnSide = 3;
@@ -22,7 +21,7 @@ const Cell = ({ row, column, board, active, difficulty }) => {
 					setCellValue(input);
 					board[row][column] = input;
 				} else {
-					hearts -= 1
+					onMistake()
 					setCellValue(input)
 					board[row][column] = input
 					// Change Cell's background to indicate a mistake has been made
@@ -100,7 +99,7 @@ const Cell = ({ row, column, board, active, difficulty }) => {
 			<input
 				type='text'
 				value={cellValue === '0' ? '' : cellValue}
-				onChange={difficulty == "casual" ? changeCellValueCasual : changeCellValueNormal}
+				onChange={difficulty === "casual" ? changeCellValueCasual : changeCellValueNormal}
 				className={styles['sudoku-node']}
 			/>
 		</div>

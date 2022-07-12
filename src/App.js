@@ -19,15 +19,28 @@ const board = [
 
 function App() {
 	const [difficulty, setDifficulty] = useState("casual")
+	const [hearts, setHearts] = useState(3);
 	const changeDifficultyHandler = (dif) => {
 		setDifficulty(dif)
 	}
 	const isSolved = () => {
 		return !board.flat().includes("0")
 	}
+	const checkHearts = () => {
+		if (hearts === 0) {
+			console.log("You lost!")
+			console.log("Restart")
+		}
+	}
+	const loseHeart = () => {
+		setHearts(() => hearts - 1)
+		checkHearts()
+		console.log(hearts)
+	}
+
 	return (
 		<div className={styles.app}>
-			<Board board={board} difficulty={difficulty}/>
+			<Board board={board} onMistake={loseHeart} hearts={hearts} difficulty={difficulty}/>
 			<Buttons check={isSolved} />
 			<Difficulty difficulty={difficulty} changeDifficulty={changeDifficultyHandler}/>
 		</div>
