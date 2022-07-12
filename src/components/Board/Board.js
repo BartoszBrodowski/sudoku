@@ -22,6 +22,8 @@ const Board = (props) => {
 										column={columnIndex}
 										board={props.board}
 										active={props.board[rowIndex][columnIndex] === '0'}
+										hearts={props.hearts}
+										onMistake={props.onMistake}
 										difficulty={props.difficulty}
 									/>
 								);
