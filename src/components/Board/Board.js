@@ -1,6 +1,6 @@
 import Cell from './Cell';
-import styles from './board.module.scss';
 
+import styles from './board.module.scss'
 
 const Board = (props) => {
 	return (
@@ -21,8 +21,8 @@ const Board = (props) => {
 										row={rowIndex}
 										column={columnIndex}
 										board={props.board}
+										changeCellValue={props.changeCellValue}
 										active={props.board[rowIndex][columnIndex] === '0'}
-										hearts={props.hearts}
 										onMistake={props.onMistake}
 										difficulty={props.difficulty}
 									/>

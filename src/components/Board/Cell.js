@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import styles from './cell.module.scss';
+import styles from './cell.module.scss'
 
 const _ = require('lodash');
 
-const Cell = ({ row, column, board, active, hearts, onMistake, difficulty }) => {
-	const [cellValue, setCellValue] = useState(board[row][column]);
+
+const Cell = ({ row, column, board, changeCellValue, active, onMistake, difficulty }) => {
+	// const [cellValue, setCellValue] = useState(board[row][column]);
 	// Number of 3x3 squares on each side, meaning
 	// a 9x9 cells Sudoku board is 3x3 squares.
 	const boardSquaresOnSide = 3;
@@ -13,17 +13,18 @@ const Cell = ({ row, column, board, active, hearts, onMistake, difficulty }) => 
 		const input = e.target.value
 		if (active) {
 			if (input === '') {
-				setCellValue('0')
-				board[row][column] = input
+				changeCellValue(row, column, input)
 			}
 			if (_.inRange(input, 1, 10)) {
+				// TODO if input is correct input value doesnt change
 				if (!isInRow(input) && !isInColumn(input) && !isInSquare(input)) {
-					setCellValue(input);
-					board[row][column] = input;
+					changeCellValue(row, column, input)
 				} else {
 					onMistake()
-					setCellValue(input)
-					board[row][column] = input
+					changeCellValue(row, column, input)
+					// console.log(`Czy jest w kolumnie: ${!isInColumn(input)}`)
+					// console.log(`Czy jest w wierszu:${!isInRow(input)}`)
+					// console.log(`Czy jest w kwadracie: ${!isInSquare(input)}`)
 					// Change Cell's background to indicate a mistake has been made
 				}
 			}
@@ -34,13 +35,12 @@ const Cell = ({ row, column, board, active, hearts, onMistake, difficulty }) => 
 		const input = e.target.value;
 		if (active) {
 			if (input === '') {
-				setCellValue('0');
+				changeCellValue(row, column, input)
 				board[row][column] = input;
 			}
 			if (_.inRange(input, 1, 10)) {
 				if (!isInRow(input) && !isInColumn(input) && !isInSquare(input)) {
-					setCellValue(input);
-					board[row][column] = input;
+					changeCellValue(row, column, input)
 				}
 			}
 		}
@@ -98,8 +98,8 @@ const Cell = ({ row, column, board, active, hearts, onMistake, difficulty }) => 
 		<div className={styles['sudoku-node-container']}>
 			<input
 				type='text'
-				value={cellValue === '0' ? '' : cellValue}
-				onChange={difficulty === "casual" ? changeCellValueCasual : changeCellValueNormal}
+				value={board[row][column] === '0' ? '' : board[row][column]}
+				onChange={difficulty === 'casual' ? (e) => changeCellValueCasual(e) : (e) => changeCellValueNormal(e)}
 				className={styles['sudoku-node']}
 			/>
 		</div>
